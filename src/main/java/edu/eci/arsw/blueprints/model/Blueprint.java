@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 
 public class Blueprint {
 
@@ -25,9 +23,9 @@ public class Blueprint {
          
     public Blueprint(String author, String name){
         this.name=name;
+        this.author=author;
         points=new ArrayList<>();
     }
-    public void setPoints(List<Point> newPoints) {this.points = newPoints;}
 
     public Blueprint() {
     }    
@@ -43,6 +41,8 @@ public class Blueprint {
     public List<Point> getPoints() {
         return points;
     }
+
+    public void setPoints(List<Point> newPoints) {this.points = newPoints;}
     
     public void addPoint(Point p){
         this.points.add(p);
@@ -50,7 +50,7 @@ public class Blueprint {
 
     @Override
     public String toString() {
-        return "Blueprint{" + "author=" + author + ", name=" + name + '}';
+        return "Blueprint{" + "author=" + author + ", name=" + name + ',' + "puntos" + points.toString() + '}';
     }
 
     @Override

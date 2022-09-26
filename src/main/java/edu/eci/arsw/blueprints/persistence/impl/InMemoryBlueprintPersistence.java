@@ -5,20 +5,17 @@
  */
 package edu.eci.arsw.blueprints.persistence.impl;
 
-import  edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  *
@@ -26,13 +23,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Qualifier("Memory")
-
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
-	private final int val=3;
 
-    //private final Map<Tuple<String,String>,Blueprint> blueprints=new HashMap<>();
 
-    private final ConcurrentHashMap<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<>();
+    private final int VALUE_PRINTS = 5;
+    private final ConcurrentHashMap<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<Tuple<String, String>, Blueprint>() {
+    };
 
     public InMemoryBlueprintPersistence() {
         //load stub data
@@ -41,7 +37,12 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
         inicializar();
         
-    }  
+    }
+
+    /**
+     * Funcion generada para crear dos blueprints que esten con el mismo autor y una cantidad definida por el
+     * usuario donde no se puedan repetir (Segundo ciclo for)
+     */
     public void inicializar() {
     	Random random = new Random();
     	// se crean los puntos
@@ -63,7 +64,6 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         blueprints.put(new Tuple<>(new2.getAuthor(),new2.getName()),new2);
         blueprints.put(new Tuple<>(new3.getAuthor(),new3.getName()),new3);
     }
-    
     @Override
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
         if (this.blueprints.containsKey(new Tuple<>(bp.getAuthor(),bp.getName()))){
@@ -73,6 +73,16 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
             this.blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
         }        
     }
+
+    @Override
+    public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
+        Blueprint bp = blueprints.get(new Tuple<>(author,bprintname));
+        if(bp == null){
+            throw new BlueprintNotFoundException("El plano no existe");
+        }
+        return bp;
+    }
+
     @Override
     public Set<Blueprint> getBluePrints() throws BlueprintPersistenceException, BlueprintNotFoundException {
         Set<Blueprint> prints = new HashSet<>();
@@ -81,13 +91,10 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
         return prints;
     }
-    @Override
-    public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
-        return blueprints.get(new Tuple<>(author, bprintname));
-    }
 
     @Override
     public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException {
+        //El hashset ayuda a determinar si un objeto ya esta en la lista o no mediante la matriz. Misma funcion que Set
         Set<Blueprint> prints = new HashSet<>();
         for(Tuple<String,String> tuple: this.blueprints.keySet()){
             if(tuple.o1.equals(author)){
@@ -99,28 +106,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     }
 
     @Override
-    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException {
-        Set<Blueprint> bluePrinthash = new HashSet<Blueprint>();
-        for (Tuple<String, String> blueprint : blueprints.keySet()) {
-            if (!blueprint.getElem1().equals("_authorname_")) {
-                bluePrinthash.add(blueprints.get(blueprint));
-            }
-        }
-        return bluePrinthash;
-    }
-	@Override
-	public Set<Blueprint> getAll() throws BlueprintNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Set<Blueprint> getSetBlueSprints(String author) throws BlueprintNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    @Override
     public void deleteBlueprint(String author, String name) throws BlueprintNotFoundException,BlueprintPersistenceException{
         blueprints.remove(new Tuple(author,name));
     }
-
 }
