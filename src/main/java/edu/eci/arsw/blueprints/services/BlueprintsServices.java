@@ -86,5 +86,7 @@ public class BlueprintsServices {
         Blueprint bp = getBlueprint(author,bpname);
         bp.setPoints(points);
     }
-
+    public void deleteService(String author, String bpname) throws BlueprintNotFoundException, BlueprintPersistenceException {
+        bpp.deleteBlueprint(author,bpname);
+    }
 }

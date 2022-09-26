@@ -118,6 +118,9 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+    @Override
+    public void deleteBlueprint(String author, String name) throws BlueprintNotFoundException,BlueprintPersistenceException{
+        blueprints.remove(new Tuple(author,name));
+    }
 
 }
