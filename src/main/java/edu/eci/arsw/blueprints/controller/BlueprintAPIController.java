@@ -1,86 +1,122 @@
-package edu.eci.arsw.blueprints.controller;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package edu.eci.arsw.blueprints.controllers;
+
+import java.util.*;
 
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
-import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
+import edu.eci.arsw.blueprints.persistence.impl.Tuple;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
-
+import org.jboss.logging.Logger;
+import org.jboss.logging.Logger.Level;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+/**
+ *
+ * @author hcadavid
+ */
 @Service
 @RestController
 public class BlueprintAPIController {
-	@Autowired
-	BlueprintsServices service;
-	
-	@RequestMapping(value = "/blueprints",method = RequestMethod.GET)
-    public ResponseEntity<?> blueprintsServices() {
+
+    @Autowired
+    //@Qualifier("Service")
+    BlueprintsServices service;
+
+    @RequestMapping(value = "/blueprints",method = RequestMethod.GET)
+    public ResponseEntity<?> manejadorGetBluePrints(){
+        ResponseEntity<?> mensaje = null;
+        Set<Blueprint> bps = null;
+        InMemoryBlueprintPersistence imbp = null;
         try {
-            Set<Blueprint> bps= null;
             bps = service.getAllBlueprints();
             service.applyFilter(bps);
-            return new ResponseEntity<>(bps, HttpStatus.ACCEPTED);
-        } catch (Exception ex) {
-            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
-        }
-    }
-    @RequestMapping(value = "/blueprints/{author}",method = RequestMethod.GET)
-    public ResponseEntity<?> BluePrintsByAuthor(@PathVariable String author) throws BlueprintPersistenceException{
-        Set<Blueprint> bps = null;
-        try {
-        	bps = service.getBlueprintsByAuthor(author);
-            return new ResponseEntity<>(bps,HttpStatus.ACCEPTED);
+            mensaje = new ResponseEntity<>(bps,HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
-        	return new ResponseEntity<>("No se encontro el autor",HttpStatus.NOT_FOUND);
+            mensaje = new ResponseEntity<>("No se encontro el autor",HttpStatus.NOT_FOUND);
+        } catch (BlueprintPersistenceException e) {
+            mensaje = new ResponseEntity<>("Algo salio mal", HttpStatus.BAD_REQUEST);
         }
+        return mensaje;
     }
+
     @RequestMapping(value = "/blueprints/{author}/{bpname}")
-    public ResponseEntity<?> GetBluePrint(@PathVariable String author, @PathVariable String bpname){
+    public ResponseEntity<?> namejadorGetBluePrint(@PathVariable String author, @PathVariable String bpname){
         Blueprint bp = null;
+        InMemoryBlueprintPersistence imbp = null;
+        ResponseEntity<?> mensaje;
         try{
             bp = service.getBlueprint(author,bpname);
-            return new ResponseEntity<>(bp,HttpStatus.ACCEPTED);
+            mensaje = new ResponseEntity<>(bp,HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
-        	return new ResponseEntity<>("No existe autor o plano con ese nombre.",HttpStatus.NOT_FOUND);
+            mensaje = new ResponseEntity<>("No existe autor o plano con ese nombre.",HttpStatus.NOT_FOUND);
         }
+        return mensaje;
     }
+
+    @RequestMapping(value = "/blueprints/{author}",method = RequestMethod.GET)
+    public ResponseEntity<?> manejadorGetBluePrintsByAuthor(@PathVariable String author){
+        ResponseEntity<?> mensaje;
+        Set<Blueprint> bps = null;
+        InMemoryBlueprintPersistence imbp = null;
+        try {
+            bps = service.getBlueprintsByAuthor(author);
+            //System.out.println("Diego-------------------------"+bps.toString());
+            mensaje = new ResponseEntity<>(bps,HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException e) {
+            mensaje = new ResponseEntity<>("No se encontro el autor",HttpStatus.NOT_FOUND);
+        } catch (BlueprintPersistenceException e) {
+            mensaje = new ResponseEntity<>("Algo salio mal", HttpStatus.BAD_REQUEST);
+        }
+        return mensaje;
+    }
+
     @RequestMapping(value = "/blueprints/addBlueprint",method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<?> manejadorPostRecursoBluePrint(@RequestBody Blueprint bp){
+        ResponseEntity<?> mensaje;
         try {
+            //registrar dato
             service.addNewBlueprint(bp);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            mensaje = new ResponseEntity<>(HttpStatus.CREATED);
         } catch (BlueprintPersistenceException e) {
-            return new ResponseEntity<>("EL nombre del plano ya existe",HttpStatus.NOT_ACCEPTABLE);
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.FATAL, null, e);
+            mensaje = new ResponseEntity<>("EL nombre del plano ya existe",HttpStatus.NOT_ACCEPTABLE);
         }
+        return mensaje;
     }
-    @PutMapping(value = "/blueprints/{author}/{bpname}")
+
+    @RequestMapping (value = "/blueprints/{author}/{bpname}", method = RequestMethod.PUT, consumes = "application/json")
     public ResponseEntity<?> manejadorPutRecursoBluePrint(@PathVariable String author, @PathVariable String bpname, @RequestBody List<Point> points){
+        ResponseEntity<?> mensaje = null;
+        System.out.println("Entro a actualizar supuestamente");
         try {
             service.updateBluePrint(author,bpname,points);
             Blueprint bp = service.getBlueprint(author,bpname);
-           return new ResponseEntity<>(bp,HttpStatus.ACCEPTED);
-        } catch (BlueprintNotFoundException e) {
-        	return new ResponseEntity<>("No exite el plano con el nombre dado",HttpStatus.NOT_FOUND);
+            System.out.println("Cadena de puntos nueva  " +bp.toString());
+            mensaje = new ResponseEntity<>(bp,HttpStatus.ACCEPTED);
+            System.out.println("Se supone que esta actualizando un blueprint");
+        }catch (BlueprintNotFoundException e) {
+            mensaje = new ResponseEntity<>("No exite el plano con el nombre dado",HttpStatus.NOT_FOUND);
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
+        System.out.println("Se supone que se actualizo");
+        return mensaje;
     }
+
     @RequestMapping(value = "/blueprints/{author}/{bpname}", method= RequestMethod.DELETE)
     public ResponseEntity<?> manejadorDeleteRecursoBluePrint(@PathVariable String author, @PathVariable String bpname){
         ResponseEntity<?> mensaje;
@@ -96,5 +132,8 @@ public class BlueprintAPIController {
         return mensaje;
     }
 
-
+    
+    
+    
+    
 }
