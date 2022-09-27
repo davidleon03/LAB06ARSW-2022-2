@@ -36,6 +36,7 @@
     </dependency>                
 
     ```
+![image](https://user-images.githubusercontent.com/90295307/192648262-ec74c246-73a4-4dd9-932f-885de5da1812.png)
 
 ## Front-End - Vistas
 
@@ -84,21 +85,8 @@
 
 ![image](https://user-images.githubusercontent.com/90295307/192560166-6dd0e60d-667f-4ac0-829e-21a35d87b8b3.png)
 
-- Creacion del metodo de DELETE en la clase BluprintAPIController:
+![image](https://user-images.githubusercontent.com/90295307/192648343-c98165b2-d985-4678-88c7-be002db07bb8.png)
 
-![image](https://user-images.githubusercontent.com/90295307/192560782-86f44c97-4ab9-4dce-b7b1-59a4c0153343.png)
-
-- Adicion del metodo deleteBlueprint para luego hacer su inyeccion con spring: 
-	
-![image](https://user-images.githubusercontent.com/90295307/192561000-71031d5d-b371-4d33-b0bb-fb42c635316d.png)
-
-- Implementacion del metodo en la clase InMemoryBlueprintPersistence:
-	
-![image](https://user-images.githubusercontent.com/90295307/192561872-6d057e8c-5e3b-414e-b620-29907a321caa.png)
-
-- Por ultimo se debe agregar el nuevo servicio en BlueprintsService:
-
-![image](https://user-images.githubusercontent.com/90295307/192562890-f4e03fba-c886-48b1-87c8-b8f7370c10b5.png)
 
 
 3. Agregue la importación de los dos nuevos módulos a la página HTML (después de las importaciones de las librerías de jQuery y Bootstrap):
@@ -113,10 +101,10 @@
     * El listado de nombre y tamaño de los planos del autor seleccionado. Es decir, una lista objetos, donde cada objeto tendrá dos propiedades: nombre de plano, y número de puntos del plano.
 
     Junto con una operación pública que permita cambiar el nombre del autor actualmente seleccionado.
+    
+![image](https://user-images.githubusercontent.com/90295307/192648481-771f65d3-a330-4931-a81c-028c8d4f8deb.png)
 
-![image](https://user-images.githubusercontent.com/90295307/192565000-21e25060-04d8-4d74-a120-d73c1d6b784f.png)
-
-![image](https://user-images.githubusercontent.com/90295307/192565151-8ade347a-75c0-4011-877a-fda14294b17e.png)
+![image](https://user-images.githubusercontent.com/90295307/192648535-ec9c71da-c388-4f2f-9ba9-91941808cadc.png)
 
 
 
@@ -128,7 +116,8 @@
 
     * Sobre cualquiera de los dos listados (el original, o el transformado mediante 'map'), aplique un 'reduce' que calcule el número de puntos. Con este valor, use jQuery para actualizar el campo correspondiente dentro del DOM.
 	
-![image](https://user-images.githubusercontent.com/90295307/192564117-9b4d0e20-91c8-40d3-9d1b-83949ce1595e.png)
+![image](https://user-images.githubusercontent.com/90295307/192648886-65ac5f66-c8db-4967-8f81-4f2db566cfd8.png)
+
 
 
 5. Asocie la operación antes creada (la de app.js) al evento 'on-click' del botón de consulta de la página.
