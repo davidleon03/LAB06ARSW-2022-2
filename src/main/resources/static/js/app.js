@@ -17,6 +17,7 @@ Blueprint = (function(){
     var bps;
     
     var apiService = apiclient;
+    var apiMock = apimock;
 
        /**
      * Funcion callback. Se necesita como parametro para usar las funciones de apimock
@@ -67,7 +68,8 @@ Blueprint = (function(){
       */
     function actualizarPlanos(){
         console.log("ENTRA AL METODO")
-            apiService.getBlueprintsByAuthor($("#AuthorInput").val(),fun);
+            //apiService.getBlueprintsByAuthor($("#AuthorInput").val(),fun);
+            apiMock.getBlueprintsByAuthor($("#AuthorInput").val(),fun);
             bps = blueprints;
             bps2 = bps.map(function(bp){
                 plano = {nombre:bp.name, puntos: bp.points.length};
