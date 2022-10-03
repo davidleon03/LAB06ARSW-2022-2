@@ -126,6 +126,8 @@
 
 ![image](https://user-images.githubusercontent.com/90295307/193612886-eb5bd1fa-e7bb-4f49-9a16-770321071fbd.png)
 
+![image](https://user-images.githubusercontent.com/98216838/193654324-c1360786-a499-4178-b4f4-04756d2ae899.png)
+
 
 ## Para la próxima semana
 
