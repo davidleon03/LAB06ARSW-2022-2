@@ -187,6 +187,10 @@
 	JSON.stringify(objetojavascript),
 	```
 	* Como en este caso se tienen tres operaciones basadas en _callbacks_, y que las mismas requieren realizarse en un orden específico, tenga en cuenta cómo usar las promesas de JavaScript [mediante alguno de los ejemplos disponibles](http://codepen.io/hcadavid/pen/jrwdgK).
+	
+	
+	![image](https://user-images.githubusercontent.com/98216838/193673679-e5fdd3fb-f097-4ae6-8864-07bd7607a82a.png)
+
 
 4. Agregue el botón 'Create new blueprint', de manera que cuando se oprima: 
 	* Se borre el canvas actual.
@@ -196,6 +200,9 @@
 
 	1. Hacer POST al recurso /blueprints, para crear el nuevo plano.
 	2. Hacer GET a este mismo recurso, para actualizar el listado de planos y el puntaje del usuario.
+	
+	![image](https://user-images.githubusercontent.com/98216838/193673700-bf067e13-be97-46d7-84d6-5e8ba5bbee51.png)
+
 
 5. Agregue el botón 'DELETE', de manera que (también con promesas):
 	* Borre el canvas.
