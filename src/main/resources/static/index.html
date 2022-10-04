@@ -27,7 +27,7 @@ table, th, td {
     <label style="margin-left:2rem" COLOR="black">Author</label>
     <input id = "AuthorInput"style = "margin-left:2rem" name="Author" type="text"></input>
     <button style = "margin-left:2rem" id="GetBlueprintsButton" onclick="Blueprint.actualizarPlanos()" class="btn btn-warning">GetbluePrints</button>
-    <button id="buttonCreateNewBlueprint" class="btn btn-warning"> Create new bluePrint</button>
+    <button id="buttonCreateNewBlueprint" onclick="Blueprint.deletePrint()" class="btn btn-warning"> Create new bluePrint</button>
     <br><br><br>
     <br><br><br>
     <table style = "width:30%;margin-left:2rem" >
@@ -47,7 +47,7 @@ table, th, td {
 
     <div style="position: absolute;left: 60rem; bottom: 25rem;">
         <button onclick="Blueprint.salvarPlano()" class="btn btn-warning">Save/Update</button>
-        <button onclick="Blueprint.eliminarPlano()" class="btn btn-warning">Delete</button>
+        <button onclick="Blueprint.deletePrint()" class="btn btn-warning">Delete</button>
     </div>
     <script src="js/apimock.js"></script>
     <script src="js/apiclient.js"></script>
