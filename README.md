@@ -158,6 +158,9 @@
 ![](img/mock2.png)
 
 1. Agregue al canvas de la página un manejador de eventos que permita capturar los 'clicks' realizados, bien sea a través del mouse, o a través de una pantalla táctil. Para esto, tenga en cuenta [este ejemplo de uso de los eventos de tipo 'PointerEvent'](https://mobiforge.com/design-development/html5-pointer-events-api-combining-touch-mouse-and-pen) (aún no soportado por todos los navegadores) para este fin. Recuerde que a diferencia del ejemplo anterior (donde el código JS está incrustado en la vista), se espera tener la inicialización de los manejadores de eventos correctamente modularizado, tal [como se muestra en este codepen](https://codepen.io/hcadavid/pen/BwWbrw).
+	
+![image](https://user-images.githubusercontent.com/90295307/193955880-62ea39e5-6504-4919-8374-4c126d5e6b49.png)
+
 
 2. Agregue lo que haga falta en sus módulos para que cuando se capturen nuevos puntos en el canvas abierto (si no se ha seleccionado un canvas NO se debe hacer nada):
 	1. Se agregue el punto al final de la secuencia de puntos del canvas actual (sólo en la memoria de la aplicación, AÚN NO EN EL API!).
@@ -188,6 +191,8 @@
 	```
 	* Como en este caso se tienen tres operaciones basadas en _callbacks_, y que las mismas requieren realizarse en un orden específico, tenga en cuenta cómo usar las promesas de JavaScript [mediante alguno de los ejemplos disponibles](http://codepen.io/hcadavid/pen/jrwdgK).
 	
+	![image](https://user-images.githubusercontent.com/90295307/193956059-10cf69b7-15da-48f7-8fbf-f0f6a428a621.png)
+
 	
 	![image](https://user-images.githubusercontent.com/98216838/193673679-e5fdd3fb-f097-4ae6-8864-07bd7607a82a.png)
 
